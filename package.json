@@ -5,15 +5,12 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc",
-        "start": "http-server dist -o"
+        "start": "http-server src -o"
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@tsconfig/recommended": "^1.0.5",
-        "cpy-cli": "^5.0.0",
         "http-server": "^14.1.1"
     }
 }
