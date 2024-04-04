@@ -1,16 +1,24 @@
 {
-    "name": "starbow",
-    "version": "1.0.0",
-    "description": "Archery game based on PeerJS, Three.js and your phone's gyroscope",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "http-server src -o"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "http-server": "^14.1.1"
-    }
+  "name": "starbow",
+  "version": "1.0.0",
+  "description": "Archery game based on PeerJS, Three.js and your phone's gyroscope",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.5",
+    "@types/w3c-generic-sensor": "^1.0.9",
+    "html-webpack-plugin": "^5.6.0",
+    "peerjs": "^1.5.2",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
 }
