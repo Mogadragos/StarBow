@@ -19,16 +19,32 @@ import { Peer } from "peerjs";
 
   const peer = new Peer();
 
-  document.getElementById("join-form")!.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target as any);
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const peerId = urlParams.get("peer");
 
-    const conn = peer.connect(data.get("peer") as any);
-    conn.on("open", () => {
-      conn.send("hi!");
-      conn.on("data", (data) => {
-        document.body.innerHTML = "Received : " + data;
+  if (!peerId) {
+    document.body.innerHTML = "Peer parameter is not defined";
+    return;
+  }
+
+  document.body.addEventListener(
+    "click",
+    () => {
+      const conn = peer.connect(peerId);
+
+      conn.on("open", () => {
+        conn.send("hi!");
+        conn.on("data", (data) => {
+          document.body.innerHTML = "Received : " + data;
+        });
       });
-    });
-  });
+
+      peer.on("error", (err) => {
+        document.body.innerHTML = "Error while connecting : " + err.type;
+        peer.disconnect();
+      });
+    },
+    { once: true }
+  );
 })();

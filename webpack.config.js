@@ -8,6 +8,7 @@ module.exports = {
   },
   externals: {
     peerjs: "peerjs",
+    QRCode: "QRCode",
   },
   module: {
     rules: [

@@ -22,7 +22,6 @@ export class GyroscopeHelper {
   }
 
   start(): void {
-    console.log("Starting");
     this.gyroscope.start();
   }
 }
