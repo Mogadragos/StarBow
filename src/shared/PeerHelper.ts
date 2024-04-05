@@ -6,44 +6,48 @@ export class PeerHelper {
 
   onConnect?: () => void;
   onData?: (data: unknown) => void;
+  onDisconnect?: () => void;
 
   constructor(openCallback?: (id: string) => void) {
     this.peer = new Peer();
 
-    this.peer.on("error", (err) => {
-      document.body.innerHTML = "Error while connecting : " + err.type;
-      this.peer.disconnect();
-    });
+    this.peer.on("error", (err) =>
+      this.disconnect("Error while connecting : " + err.type)
+    );
 
     if (openCallback) {
       this.peer.on("open", openCallback);
     }
   }
 
-  private initConnexion(conn: DataConnection) {
+  private initConnexion(conn: DataConnection): void {
     conn.on("open", () => {
       this.onConnect && this.onConnect();
 
       conn.on("data", (data) => this.onData && this.onData(data));
 
-      conn.on("close", () => {
-        document.body.innerHTML = "Your peer is disconnected";
-        this.peer.destroy();
-      });
+      conn.on("close", () => this.disconnect("Your peer is disconnected"));
     });
 
     this.conn = conn;
   }
 
-  connect(peerId: string) {
+  private disconnect(message: string): void {
+    document.body.innerHTML = message;
+    this.peer.destroy();
+
+    this.onDisconnect && this.onDisconnect();
+  }
+
+  connect(peerId: string): void {
     this.initConnexion(this.peer.connect(peerId));
   }
 
-  host() {
+  host(): void {
     this.peer.on("connection", (conn) => this.initConnexion(conn));
   }
 
-  send(data: unknown) {
+  send(data: unknown): void {
     this.conn?.send(data);
   }
 }

@@ -1,15 +1,17 @@
 import { GyroscopeHelper } from "./GyroscopeHelper";
 import { PeerHelper } from "../shared/PeerHelper";
+import { BaseSensorHelper } from "../shared/BaseSensorHelper";
+import { DeviceOrientationHelper } from "./DeviceOrientationHelper";
 
 (async () => {
-  const gyroscopeHelper = new GyroscopeHelper();
+  const sensorHelper: BaseSensorHelper = new GyroscopeHelper();
 
-  if (!gyroscopeHelper.isPresent()) {
+  if (!sensorHelper.isPresent()) {
     document.body.innerHTML = "Gyroscope is not detected";
     return;
   }
 
-  if (await gyroscopeHelper.isNotGranted()) {
+  if (!(await sensorHelper.isPermissionGranted())) {
     document.body.innerHTML = "Gyroscope permission is not granted";
     return;
   }
@@ -25,11 +27,13 @@ import { PeerHelper } from "../shared/PeerHelper";
   const peerHelper = new PeerHelper();
   peerHelper.onConnect = () => {
     document.body.innerHTML = "Start send data";
-    gyroscopeHelper.start();
+    sensorHelper.start();
   };
-  gyroscopeHelper.onRead = (data: any) => peerHelper.send(data);
+  peerHelper.onDisconnect = () => sensorHelper.stop();
 
-  gyroscopeHelper.init();
+  sensorHelper.onRead = (data: any) => peerHelper.send(data);
+
+  sensorHelper.init();
 
   document.body.addEventListener("click", () => peerHelper.connect(peerId), {
     once: true,

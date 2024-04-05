@@ -1,4 +1,5 @@
 import {
+  AxesHelper,
   BoxGeometry,
   Camera,
   Mesh,
@@ -31,28 +32,37 @@ export class Game {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     const geometry = new BoxGeometry(1, 1, 1);
-    const material = new MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube = new Mesh(geometry, material);
+    this.cube = new Mesh(geometry, [
+      new MeshBasicMaterial({ color: 0xff0000 }),
+      new MeshBasicMaterial({ color: 0xff0000 }),
+      new MeshBasicMaterial({ color: 0x00ff00 }),
+      new MeshBasicMaterial({ color: 0x00ff00 }),
+      new MeshBasicMaterial({ color: 0x0000ff }),
+      new MeshBasicMaterial({ color: 0x0000ff }),
+    ]);
     this.scene.add(this.cube);
+
+    const axesHelper = new AxesHelper(5);
+    this.scene.add(axesHelper);
 
     this.camera.position.z = 5;
   }
 
-  init() {
+  init(): void {
     document.body.replaceChildren(this.renderer.domElement);
     this.animate();
   }
 
-  update(data: { x: number; y: number; z: number }) {
+  update(data: { x: number; y: number; z: number }): void {
     this.gyroscope = data;
   }
 
-  animate() {
+  animate(): void {
     requestAnimationFrame(() => this.animate());
 
-    this.cube.rotation.x += this.gyroscope.x / 50;
-    this.cube.rotation.y += this.gyroscope.y / 50;
-    this.cube.rotation.z += this.gyroscope.z / 50;
+    this.cube.rotation.x = this.gyroscope.x;
+    this.cube.rotation.y = this.gyroscope.y;
+    this.cube.rotation.z = this.gyroscope.z;
 
     this.renderer.render(this.scene, this.camera);
   }
