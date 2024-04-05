@@ -1,6 +1,8 @@
 export class GyroscopeHelper {
   gyroscope!: Gyroscope;
 
+  onRead?: (data: { x?: number; y?: number; z?: number }) => void;
+
   isPresent(): boolean {
     return "Gyroscope" in window;
   }
@@ -11,17 +13,25 @@ export class GyroscopeHelper {
       .then((result) => result.state != "granted");
   }
 
-  init(): void {
-    this.gyroscope = new Gyroscope({ frequency: 5 });
-    return;
-    this.gyroscope.addEventListener("reading", (e) => {
-      document.body.innerHTML = `Angular velocity along the X-axis ${this.gyroscope.x}<br />
-                                    Angular velocity along the Y-axis ${this.gyroscope.y}<br />
-                                    Angular velocity along the Z-axis ${this.gyroscope.z}`;
-    });
+  init(frequency = 1): void {
+    this.gyroscope = new Gyroscope({ frequency });
+    this.gyroscope.addEventListener(
+      "reading",
+      () =>
+        this.onRead &&
+        this.onRead({
+          x: this.gyroscope.x,
+          y: this.gyroscope.y,
+          z: this.gyroscope.z,
+        })
+    );
   }
 
   start(): void {
     this.gyroscope.start();
+  }
+
+  stop(): void {
+    this.gyroscope.stop();
   }
 }

@@ -1,5 +1,5 @@
 import { GyroscopeHelper } from "./GyroscopeHelper";
-import { Peer } from "peerjs";
+import { PeerHelper } from "../shared/PeerHelper";
 
 (async () => {
   const gyroscopeHelper = new GyroscopeHelper();
@@ -14,13 +14,7 @@ import { Peer } from "peerjs";
     return;
   }
 
-  gyroscopeHelper.init();
-  gyroscopeHelper.start();
-
-  const peer = new Peer();
-
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+  const urlParams = new URLSearchParams(window.location.search);
   const peerId = urlParams.get("peer");
 
   if (!peerId) {
@@ -28,23 +22,16 @@ import { Peer } from "peerjs";
     return;
   }
 
-  document.body.addEventListener(
-    "click",
-    () => {
-      const conn = peer.connect(peerId);
+  const peerHelper = new PeerHelper();
+  peerHelper.onConnect = () => {
+    document.body.innerHTML = "Start send data";
+    gyroscopeHelper.start();
+  };
+  gyroscopeHelper.onRead = (data: any) => peerHelper.send(data);
 
-      conn.on("open", () => {
-        conn.send("hi!");
-        conn.on("data", (data) => {
-          document.body.innerHTML = "Received : " + data;
-        });
-      });
+  gyroscopeHelper.init();
 
-      peer.on("error", (err) => {
-        document.body.innerHTML = "Error while connecting : " + err.type;
-        peer.disconnect();
-      });
-    },
-    { once: true }
-  );
+  document.body.addEventListener("click", () => peerHelper.connect(peerId), {
+    once: true,
+  });
 })();

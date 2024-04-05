@@ -1,26 +1,17 @@
-import { Peer } from "peerjs";
+import { PeerHelper } from "../shared/PeerHelper";
 
-const peer = new Peer();
-
-peer.on("connection", (conn) => {
-  conn.on("data", (data) => {
-    console.log("Connexion");
-    // Will print 'hi!'
-    document.body.innerHTML = data as string;
+(() => {
+  const peerHelper = new PeerHelper((id) => {
+    new global.QRCode(
+      document.getElementById("qrcode")!,
+      window.location + "controller.html?peer=" + id
+    );
+    document.getElementById("qrcodestring")!.innerHTML = id;
   });
-  conn.on("open", () => {
-    conn.send("hello!");
-  });
-});
 
-peer.on("open", (id) => {
-  new global.QRCode(
-    document.getElementById("qrcode")!,
-    window.location + "controller.html?peer=" + id
-  );
-  document.getElementById("qrcodestring")!.innerHTML = id;
-});
+  peerHelper.onConnect = () => peerHelper.send("hello!");
+  peerHelper.onData = (data) =>
+    (document.body.innerHTML = JSON.stringify(data));
 
-peer.on("error", (err) => {
-  console.error(err.type);
-});
+  peerHelper.host();
+})();
