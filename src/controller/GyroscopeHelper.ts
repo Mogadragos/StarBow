@@ -13,7 +13,7 @@ export class GyroscopeHelper {
       .then((result) => result.state != "granted");
   }
 
-  init(frequency = 1): void {
+  init(frequency = 24): void {
     this.gyroscope = new Gyroscope({ frequency });
     this.gyroscope.addEventListener(
       "reading",

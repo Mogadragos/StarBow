@@ -1,4 +1,5 @@
 import { PeerHelper } from "../shared/PeerHelper";
+import { Game } from "./Game";
 
 (() => {
   const peerHelper = new PeerHelper((id) => {
@@ -9,9 +10,14 @@ import { PeerHelper } from "../shared/PeerHelper";
     document.getElementById("qrcodestring")!.innerHTML = id;
   });
 
-  peerHelper.onConnect = () => peerHelper.send("hello!");
+  const game = new Game();
+
+  peerHelper.onConnect = () => {
+    peerHelper.send("hello!");
+    game.init();
+  };
   peerHelper.onData = (data) =>
-    (document.body.innerHTML = JSON.stringify(data));
+    game.update(data as { x: number; y: number; z: number });
 
   peerHelper.host();
 })();
