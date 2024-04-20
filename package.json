@@ -1,29 +1,31 @@
 {
-  "name": "starbow",
-  "version": "1.0.0",
-  "description": "Archery game based on PeerJS, Three.js and your phone's gyroscope",
-  "main": "src/index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "develop": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@tsconfig/recommended": "^1.0.5",
-    "@types/qrcodejs": "^1.0.4",
-    "@types/three": "^0.163.0",
-    "@types/w3c-generic-sensor": "^1.0.9",
-    "html-webpack-plugin": "^5.6.0",
-    "peerjs": "^1.5.2",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
-  },
-  "dependencies": {
-    "three": "^0.163.0"
-  }
+    "name": "starbow",
+    "version": "1.0.0",
+    "description": "Archery game based on PeerJS, Three.js and your phone's gyroscope",
+    "main": "src/index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "develop": "webpack-dev-server --mode development",
+        "build": "webpack --mode production"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "@tsconfig/recommended": "^1.0.5",
+        "@types/dat.gui": "^0.7.13",
+        "@types/qrcodejs": "^1.0.4",
+        "@types/three": "^0.163.0",
+        "@types/w3c-generic-sensor": "^1.0.9",
+        "html-webpack-plugin": "^5.6.0",
+        "peerjs": "^1.5.2",
+        "ts-loader": "^9.5.1",
+        "webpack": "^5.91.0",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^5.0.4"
+    },
+    "dependencies": {
+        "dat.gui": "^0.7.9",
+        "three": "^0.163.0"
+    }
 }
