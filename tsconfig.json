@@ -1,10 +1,11 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json",
-  "include": ["src/**/*"],
-  "exclude": [],
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "module": "nodenext",
-    "moduleResolution": "nodenext"
-  }
+    "extends": "@tsconfig/recommended/tsconfig.json",
+    "include": ["src/**/*"],
+    "exclude": [],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "noImplicitOverride": true,
+        "module": "nodenext",
+        "moduleResolution": "nodenext"
+    }
 }

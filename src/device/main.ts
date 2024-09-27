@@ -1,19 +1,21 @@
 import { PeerHelper } from "../shared/PeerHelper";
-import { BaseSensorHelper } from "../shared/BaseSensorHelper";
-
-import { GyroscopeHelper } from "./GyroscopeHelper";
-// Used for GyroNormHelper
+import { SensorFactory } from "./factory/SensorFactory";
+import { SensorNotFoundException } from "./exception/SensorNotFoundException";
+import { SensorNotGrantedException } from "./exception/SensorNotGrantedException";
+import { ISensor } from "./service/ISensor";
 
 (async () => {
-    const sensorHelper: BaseSensorHelper = new GyroscopeHelper();
-
-    if (!sensorHelper.isPresent()) {
-        document.body.innerHTML = "Gyroscope is not detected";
-        return;
-    }
-
-    if (!(await sensorHelper.isPermissionGranted())) {
-        document.body.innerHTML = "Gyroscope permission is not granted";
+    let sensorHelper: ISensor;
+    try {
+        sensorHelper = await new SensorFactory().getSensor();
+    } catch (error: unknown) {
+        if (error instanceof SensorNotFoundException) {
+            document.body.innerHTML = "Sensor is not detected";
+        } else if (error instanceof SensorNotGrantedException) {
+            document.body.innerHTML = "Sensor permission is not granted";
+        } else {
+            document.body.innerHTML = "Unexpected technical error";
+        }
         return;
     }
 
@@ -32,9 +34,7 @@ import { GyroscopeHelper } from "./GyroscopeHelper";
     };
     peerHelper.onDisconnect = () => sensorHelper.stop();
 
-    sensorHelper.onRead = (data: any) => peerHelper.send(data);
-
-    await sensorHelper.init();
+    sensorHelper.addReadingCallback((data: any) => peerHelper.send(data));
 
     document.body.addEventListener("click", () => peerHelper.connect(peerId), {
         once: true,
