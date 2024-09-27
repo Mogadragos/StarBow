@@ -3,8 +3,8 @@ const path = require("path");
 
 module.exports = {
     entry: {
-        main: "./src/game/index.ts",
-        controller: "./src/controller/index.ts",
+        browser: "./src/browser/main.ts",
+        device: "./src/device/main.ts",
     },
     externals: {
         peerjs: "peerjs",
@@ -24,21 +24,20 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "[name].[hash:8].js",
-        sourceMapFilename: "[name].[hash:8].map",
-        chunkFilename: "[id].[hash:8].js",
+        filename: "[name].[chunkhash:8].js",
+        sourceMapFilename: "[name].[chunkhash:8].map",
+        chunkFilename: "[id].[chunkhash:8].js",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: "index.html",
             title: "StarBow",
-            template: "src/index.html",
-            chunks: ["main"],
+            template: "src/browser.html",
+            chunks: ["browser"],
         }),
         new HtmlWebpackPlugin({
-            filename: "controller.html",
-            template: "src/controller.html",
-            chunks: ["controller"],
+            filename: "device.html",
+            template: "src/device.html",
+            chunks: ["device"],
         }),
     ],
     devServer: {

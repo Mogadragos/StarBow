@@ -2,13 +2,10 @@ import { PeerHelper } from "../shared/PeerHelper";
 import { BaseSensorHelper } from "../shared/BaseSensorHelper";
 
 import { GyroscopeHelper } from "./GyroscopeHelper";
-import { DeviceOrientationHelper } from "./DeviceOrientationHelper";
-import { GyroNormHelper } from "./GyroNormHelper";
 // Used for GyroNormHelper
-import FULLTILT from "../lib/Full-Tilt-0.5.3/fulltilt.js";
 
 (async () => {
-    const sensorHelper: BaseSensorHelper = new GyroNormHelper();
+    const sensorHelper: BaseSensorHelper = new GyroscopeHelper();
 
     if (!sensorHelper.isPresent()) {
         document.body.innerHTML = "Gyroscope is not detected";

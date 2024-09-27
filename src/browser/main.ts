@@ -5,7 +5,7 @@ import { Game } from "./Game";
     const peerHelper = new PeerHelper((id) => {
         new global.QRCode(
             document.getElementById("qrcode")!,
-            window.location + "controller.html?peer=" + id
+            window.location + "device.html?peer=" + id
         );
         document.getElementById("qrcodestring")!.innerHTML = id;
     });
