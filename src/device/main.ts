@@ -1,13 +1,16 @@
 import { PeerHelper } from "../shared/PeerHelper";
-import { SensorFactory } from "./factory/SensorFactory";
+import { SensorType } from "./enum/SensorType";
 import { SensorNotFoundException } from "./exception/SensorNotFoundException";
 import { SensorNotGrantedException } from "./exception/SensorNotGrantedException";
-import { ISensor } from "./service/ISensor";
+import { SensorHelperFactory } from "./factory/SensorHelperFactory";
+import { ISensorHelper } from "./service/ISensorHelper";
 
 (async () => {
-    let sensorHelper: ISensor;
+    let sensorHelper: ISensorHelper;
     try {
-        sensorHelper = await new SensorFactory().getSensor();
+        sensorHelper = await new SensorHelperFactory().getSensorHelper(
+            SensorType.RelativeOrientationSensor,
+        );
     } catch (error: unknown) {
         if (error instanceof SensorNotFoundException) {
             document.body.innerHTML = "Sensor is not detected";

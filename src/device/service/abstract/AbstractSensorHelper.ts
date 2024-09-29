@@ -1,8 +1,8 @@
 import { SensorNotFoundException } from "../../exception/SensorNotFoundException";
 import { SensorNotGrantedException } from "../../exception/SensorNotGrantedException";
-import { ISensor } from "../ISensor";
+import { ISensorHelper } from "../ISensorHelper";
 
-export abstract class AbstractSensor implements ISensor {
+export abstract class AbstractSensorHelper implements ISensorHelper {
     constructor() {
         if (!this.isPresent()) {
             throw new SensorNotFoundException();
