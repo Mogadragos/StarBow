@@ -4,7 +4,7 @@ import { ISensorHelper } from "../ISensorHelper";
 
 export abstract class AbstractSensorHelper implements ISensorHelper {
     constructor() {
-        if (!this.isPresent()) {
+        if (!this.isPresent() && !this.setSensorPolyfill()) {
             throw new SensorNotFoundException();
         }
     }
@@ -15,9 +15,12 @@ export abstract class AbstractSensorHelper implements ISensorHelper {
         }
     }
 
+    protected abstract setSensorPolyfill(): boolean;
+
+    protected abstract isPresent(): boolean;
+    protected abstract isPermissionGranted(): Promise<boolean>;
+
     abstract addReadingCallback(callback: (data: number[]) => void): void;
-    abstract isPresent(): boolean;
-    abstract isPermissionGranted(): Promise<boolean>;
     abstract start(): void;
     abstract stop(): void;
 }
