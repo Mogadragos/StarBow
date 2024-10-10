@@ -1,24 +1,26 @@
-import { PeerHelper } from "../shared/PeerHelper";
 import { Game } from "./Game";
+import { IAppPeerHost } from "./socket/IAppPeerHost";
+import { AppPeerJsHost } from "./socket/impl/AppPeerJsHost";
 
 (() => {
-    const peerHelper = new PeerHelper((id) => {
+    const peer: IAppPeerHost = new AppPeerJsHost();
+    peer.onReady = (id) => {
         new global.QRCode(
             document.getElementById("qrcode")!,
             window.location + "device.html?peer=" + id,
         );
         document.getElementById("qrcodestring")!.innerHTML = id;
-    });
+    };
 
     const game = new Game(true, true);
 
-    peerHelper.onConnect = () => {
-        peerHelper.send("hello!");
+    peer.onConnect = () => {
+        peer.send("hello!");
         game.init();
     };
-    peerHelper.onData = (data) => game.update(data as number[]);
+    peer.onData = (data) => game.update(data as number[]);
 
-    peerHelper.host();
+    peer.host();
     /*
     const game = new Game();
     game.init();

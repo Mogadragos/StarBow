@@ -1,9 +1,10 @@
-import { PeerHelper } from "../shared/PeerHelper";
 import { SensorType } from "./enum/SensorType";
 import { SensorNotFoundException } from "./exception/SensorNotFoundException";
 import { SensorNotGrantedException } from "./exception/SensorNotGrantedException";
 import { SensorHelperFactory } from "./factory/SensorHelperFactory";
 import { ISensorHelper } from "./service/ISensorHelper";
+import { IAppPeerClient } from "./socket/IAppPeerClient";
+import { AppPeerJsClient } from "./socket/impl/AppPeerJsClient";
 
 (async () => {
     let sensorHelper: ISensorHelper;
@@ -30,16 +31,16 @@ import { ISensorHelper } from "./service/ISensorHelper";
         return;
     }
 
-    const peerHelper = new PeerHelper();
-    peerHelper.onConnect = () => {
+    const peer: IAppPeerClient = new AppPeerJsClient();
+    peer.onConnect = () => {
         document.body.innerHTML = "Start send data";
         sensorHelper.start();
     };
-    peerHelper.onDisconnect = () => sensorHelper.stop();
+    peer.onDisconnect = () => sensorHelper.stop();
 
-    sensorHelper.addReadingCallback((data: any) => peerHelper.send(data));
+    sensorHelper.addReadingCallback((data: any) => peer.send(data));
 
-    document.body.addEventListener("click", () => peerHelper.connect(peerId), {
+    document.body.addEventListener("click", () => peer.connect(peerId), {
         once: true,
     });
 })();
