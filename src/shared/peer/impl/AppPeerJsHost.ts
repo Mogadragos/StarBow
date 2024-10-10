@@ -1,5 +1,5 @@
-import { AbstractAppPeerJs } from "../../../shared/peer/abstract/AbstractAppPeerJs";
 import { IAppPeerHost } from "../IAppPeerHost";
+import { AbstractAppPeerJs } from "../abstract/AbstractAppPeerJs";
 
 export class AppPeerJsHost extends AbstractAppPeerJs implements IAppPeerHost {
     host(): void {

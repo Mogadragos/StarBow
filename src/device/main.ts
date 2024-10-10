@@ -1,10 +1,12 @@
+import { Config } from "../shared/Config";
+import { IAppPeerClient } from "../shared/peer/IAppPeerClient";
+import { PeerType } from "../shared/peer/enum/PeerType";
+import { AppPeerFactory } from "../shared/peer/factory/AppPeerFactory";
 import { SensorType } from "./enum/SensorType";
 import { SensorNotFoundException } from "./exception/SensorNotFoundException";
 import { SensorNotGrantedException } from "./exception/SensorNotGrantedException";
 import { SensorHelperFactory } from "./factory/SensorHelperFactory";
 import { ISensorHelper } from "./service/ISensorHelper";
-import { IAppPeerClient } from "./socket/IAppPeerClient";
-import { AppPeerJsClient } from "./socket/impl/AppPeerJsClient";
 
 (async () => {
     let sensorHelper: ISensorHelper;
@@ -31,7 +33,10 @@ import { AppPeerJsClient } from "./socket/impl/AppPeerJsClient";
         return;
     }
 
-    const peer: IAppPeerClient = new AppPeerJsClient();
+    const peer: IAppPeerClient = new AppPeerFactory()
+        .createFactory(Config.PEER_TYPE)
+        .createClient();
+
     peer.onConnect = () => {
         document.body.innerHTML = "Start send data";
         sensorHelper.start();

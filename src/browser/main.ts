@@ -1,9 +1,13 @@
+import { Config } from "../shared/Config";
+import { IAppPeerHost } from "../shared/peer/IAppPeerHost";
+import { AppPeerFactory } from "../shared/peer/factory/AppPeerFactory";
 import { Game } from "./Game";
-import { IAppPeerHost } from "./socket/IAppPeerHost";
-import { AppPeerJsHost } from "./socket/impl/AppPeerJsHost";
 
 (() => {
-    const peer: IAppPeerHost = new AppPeerJsHost();
+    const peer: IAppPeerHost = new AppPeerFactory()
+        .createFactory(Config.PEER_TYPE)
+        .createHost();
+
     peer.onReady = (id) => {
         new global.QRCode(
             document.getElementById("qrcode")!,

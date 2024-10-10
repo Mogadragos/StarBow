@@ -1,4 +1,4 @@
-import { IAppPeer } from "../../shared/peer/IAppPeer";
+import { IAppPeer } from "./IAppPeer";
 
 export interface IAppPeerHost extends IAppPeer {
     host(): void;
