@@ -14,7 +14,7 @@ export class LoaderHelper {
                 path,
                 (data) => resolve(data),
                 this.onProgress,
-                reject
+                reject,
             );
         });
     }
