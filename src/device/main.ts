@@ -1,19 +1,15 @@
 import { Config } from "../shared/Config";
 import { IAppPeerClient } from "../shared/peer/IAppPeerClient";
-import { PeerType } from "../shared/peer/enum/PeerType";
 import { AppPeerFactory } from "../shared/peer/factory/AppPeerFactory";
-import { SensorType } from "./enum/SensorType";
-import { SensorNotFoundException } from "./exception/SensorNotFoundException";
-import { SensorNotGrantedException } from "./exception/SensorNotGrantedException";
-import { SensorHelperFactory } from "./factory/SensorHelperFactory";
-import { ISensorHelper } from "./service/ISensorHelper";
+import { IAppSensor } from "./sensor/IAppSensor";
+import { SensorNotFoundException } from "./sensor/exception/SensorNotFoundException";
+import { SensorNotGrantedException } from "./sensor/exception/SensorNotGrantedException";
+import { AppSensorFactory } from "./sensor/factory/AppSensorFactory";
 
 (async () => {
-    let sensorHelper: ISensorHelper;
+    let sensor: IAppSensor;
     try {
-        sensorHelper = await new SensorHelperFactory().getSensorHelper(
-            SensorType.RelativeOrientationSensor,
-        );
+        sensor = await new AppSensorFactory().createSensor(Config.SENSOR_TYPE);
     } catch (error: unknown) {
         if (error instanceof SensorNotFoundException) {
             document.body.innerHTML = "Sensor is not detected";
@@ -39,11 +35,11 @@ import { ISensorHelper } from "./service/ISensorHelper";
 
     peer.onConnect = () => {
         document.body.innerHTML = "Start send data";
-        sensorHelper.start();
+        sensor.start();
     };
-    peer.onDisconnect = () => sensorHelper.stop();
+    peer.onDisconnect = () => sensor.stop();
 
-    sensorHelper.addReadingCallback((data: any) => peer.send(data));
+    sensor.onReading = (data: any) => peer.send(data);
 
     document.body.addEventListener("click", () => peer.connect(peerId), {
         once: true,

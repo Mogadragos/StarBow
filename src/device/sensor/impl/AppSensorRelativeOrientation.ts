@@ -1,4 +1,4 @@
-import { AbstractOrientationSensorHelper } from "../abstract/AbstractOrientationSensorHelper";
+import { AbstractAppSensorOrientation } from "../abstract/AbstractAppSensorOrientation";
 import { RelativeOrientationSensor as RelativeOrientationSensorPolyfill } from "motion-sensors-polyfill";
 
 declare global {
@@ -7,13 +7,13 @@ declare global {
     }
 }
 
-export class RelativeOrientationSensorHelper extends AbstractOrientationSensorHelper {
+export class AppSensorRelativeOrientation extends AbstractAppSensorOrientation {
     override async init(): Promise<void> {
         await super.init();
         this.sensor = new RelativeOrientationSensor({ frequency: 12 });
     }
 
-    protected override setSensorPolyfill(): boolean {
+    override setPolyfill(): boolean {
         window.RelativeOrientationSensor = RelativeOrientationSensorPolyfill;
         return true;
     }
