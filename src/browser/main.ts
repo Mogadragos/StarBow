@@ -6,12 +6,12 @@ import { Game } from "./Game";
 (() => {
     const peer: IAppPeerHost = new AppPeerFactory()
         .createFactory(Config.PEER_TYPE)
-        .createHost(Config.DEBUG ? Config.DEBUG_ID : undefined);
+        .createHost(Config.DEVMODE ? Config.DEVMODE_ID : undefined);
 
     peer.onReady = (id) => {
         const url = window.location + "device.html?peer=" + id;
         new global.QRCode(document.getElementById("qrcode")!, url);
-        if (Config.DEBUG) {
+        if (Config.DEVMODE) {
             document.getElementById("qrcodestring")!.innerHTML =
                 `<a href=${url}>${id}</a>`;
         } else {
@@ -19,7 +19,7 @@ import { Game } from "./Game";
         }
     };
 
-    const game = new Game(Config.DEBUG, true);
+    const game = new Game(Config.DEVMODE, true);
 
     peer.onConnect = async () => {
         peer.send("hello!");
