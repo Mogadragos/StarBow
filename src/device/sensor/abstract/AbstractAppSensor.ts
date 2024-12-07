@@ -16,7 +16,7 @@ export abstract class AbstractAppSensor implements IAppSensor {
         }
     }
 
-    async init(): Promise<void> {
+    async init(_frequency: number): Promise<void> {
         if (!(await this.isPermissionGranted())) {
             throw new SensorNotGrantedException();
         }

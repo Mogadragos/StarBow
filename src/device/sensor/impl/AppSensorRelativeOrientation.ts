@@ -8,9 +8,9 @@ declare global {
 }
 
 export class AppSensorRelativeOrientation extends AbstractAppSensorOrientation {
-    override async init(): Promise<void> {
-        await super.init();
-        this.sensor = new RelativeOrientationSensor({ frequency: 12 });
+    override async init(frequency: number): Promise<void> {
+        await super.init(frequency);
+        this.sensor = new RelativeOrientationSensor({ frequency: frequency });
     }
 
     override setPolyfill(): boolean {

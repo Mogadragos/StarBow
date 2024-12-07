@@ -9,7 +9,10 @@ import { AppSensorFactory } from "./sensor/factory/AppSensorFactory";
 (async () => {
     let sensor: IAppSensor;
     try {
-        sensor = await new AppSensorFactory().createSensor(Config.SENSOR_TYPE);
+        sensor = await new AppSensorFactory().createSensor(
+            Config.SENSOR_TYPE,
+            Config.SENSOR_FREQUENCY,
+        );
     } catch (error: unknown) {
         if (error instanceof SensorNotFoundException) {
             document.body.innerHTML = "Sensor is not detected";

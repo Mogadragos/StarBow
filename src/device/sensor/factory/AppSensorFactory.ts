@@ -6,7 +6,10 @@ import { AppSensorRelativeOrientation } from "../impl/AppSensorRelativeOrientati
 export class AppSensorFactory {
     constructor() {}
 
-    async createSensor(sensorType: SensorType): Promise<IAppSensor> {
+    async createSensor(
+        sensorType: SensorType,
+        frequency: number,
+    ): Promise<IAppSensor> {
         let sensor: IAppSensor;
         switch (sensorType) {
             case SensorType.AbsoluteOrientation:
@@ -18,7 +21,7 @@ export class AppSensorFactory {
             default:
                 throw new TypeError(sensorType + " is not a valid type");
         }
-        await sensor.init();
+        await sensor.init(frequency);
         return sensor;
     }
 }
