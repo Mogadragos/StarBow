@@ -22,7 +22,7 @@ import { AppSensorFactory } from "./sensor/factory/AppSensorFactory";
     }
 
     const urlParams = new URLSearchParams(window.location.search);
-    const peerId = urlParams.get("peer");
+    const peerId = Config.DEBUG ? Config.DEBUG_ID : urlParams.get("peer");
 
     if (!peerId) {
         document.body.innerHTML = "Peer parameter is not defined";

@@ -9,9 +9,9 @@ export abstract class AbstractAppPeerJs extends AbstractAppPeer {
     protected peer: Peer;
     private conn?: DataConnection;
 
-    constructor() {
+    constructor(id?: string) {
         super();
-        this.peer = new Peer();
+        this.peer = new Peer(id!);
         this.peer.on("error", (err) => this.disconnect(err.type));
     }
 

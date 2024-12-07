@@ -8,7 +8,7 @@ export class AppPeerJsFactory implements IAppPeerFactory {
     createClient(): IAppPeerClient {
         return new AppPeerJsClient();
     }
-    createHost(): IAppPeerHost {
-        return new AppPeerJsHost();
+    createHost(id?: string): IAppPeerHost {
+        return new AppPeerJsHost(id);
     }
 }
