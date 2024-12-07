@@ -67,6 +67,8 @@ export class Game {
                 "./3D/prototype_of_unnamed_smartphone/scene.gltf",
             );
             // Fix the rotation of the 3D Model
+            gltfData.scene.children[0].rotation.x = Math.PI;
+            gltfData.scene.children[0].rotation.y = Math.PI;
             gltfData.scene.children[0].rotation.z = (5 * Math.PI) / 36;
             this.bow = gltfData.scene as unknown as Object3D;
         }

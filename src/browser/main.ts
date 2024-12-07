@@ -9,20 +9,23 @@ import { Game } from "./Game";
         .createHost();
 
     peer.onReady = (id) => {
-        new global.QRCode(
-            document.getElementById("qrcode")!,
-            window.location + "device.html?peer=" + id,
-        );
-        document.getElementById("qrcodestring")!.innerHTML = id;
+        const url = window.location + "device.html?peer=" + id;
+        new global.QRCode(document.getElementById("qrcode")!, url);
+        if (Config.debug) {
+            document.getElementById("qrcodestring")!.innerHTML =
+                `<a href=${url}>${id}</a>`;
+        } else {
+            document.getElementById("qrcodestring")!.innerHTML = id;
+        }
     };
 
-    const game = new Game(true, true);
+    const game = new Game(Config.debug, true);
 
-    peer.onConnect = () => {
+    peer.onConnect = async () => {
         peer.send("hello!");
-        game.init();
+        await game.init();
+        peer.onData = (data) => game.update(data as number[]);
     };
-    peer.onData = (data) => game.update(data as number[]);
 
     peer.host();
     /*
