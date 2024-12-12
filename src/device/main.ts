@@ -37,10 +37,12 @@ import { AppSensorFactory } from "./sensor/factory/AppSensorFactory";
         .createClient();
 
     peer.onConnect = () => {
-        document.body.innerHTML = "Start send data";
-        sensor.start();
+        document.body.innerHTML = "Follow the steps";
     };
+
     peer.onDisconnect = () => sensor.stop();
+
+    peer.onData = (_data) => sensor.start();
 
     sensor.onReading = (data: any) => peer.send(data);
 

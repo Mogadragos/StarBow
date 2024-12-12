@@ -4,5 +4,6 @@ export interface IAppPeer {
     onDisconnect?: () => void;
     onReady?: (id: string) => void;
 
+    disconnect(message: string): void;
     send(data: unknown): void;
 }

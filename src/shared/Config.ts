@@ -5,6 +5,6 @@ export const Config = {
     DEVMODE: true,
     DEVMODE_ID: "DEVMODE",
     PEER_TYPE: PeerType.PeerJs,
-    SENSOR_TYPE: SensorType.AbsoluteOrientation,
+    SENSOR_TYPE: SensorType.RelativeOrientation,
     SENSOR_FREQUENCY: 12,
 };

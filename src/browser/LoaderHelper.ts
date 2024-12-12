@@ -8,18 +8,24 @@ export class LoaderHelper {
         this.loader = new GLTFLoader();
     }
 
-    async load(path: string): Promise<GLTF> {
+    async loadGLTF(path: string): Promise<GLTF> {
         return new Promise((resolve, reject) => {
-            this.loader.load(
-                path,
-                (data) => resolve(data),
-                this.onProgress,
-                reject,
-            );
+            this.loader.load(path, resolve, this.onProgress, reject);
+        });
+    }
+
+    async loadImage(path: string): Promise<HTMLImageElement> {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onprogress = this.onProgress;
+            image.onerror = reject;
+            image.src = path;
         });
     }
 
     onProgress(e: ProgressEvent<EventTarget>) {
+        // TODO: Add progress bar or animation
         console.log((e.loaded / e.total) * 100 + "% loaded");
     }
 }

@@ -3,8 +3,8 @@ import { DataConnection, Peer } from "peerjs";
 
 export abstract class AbstractAppPeerJs extends AbstractAppPeer {
     onConnect?: () => void;
-    onData?: (data: unknown) => void;
     onDisconnect?: () => void;
+    private _onData?: (data: unknown) => void;
 
     protected peer: Peer;
     private conn?: DataConnection;
@@ -17,7 +17,16 @@ export abstract class AbstractAppPeerJs extends AbstractAppPeer {
 
     set onReady(onReady: (id: string) => void) {
         this.peer.removeListener("open");
-        this.peer.on("open", onReady);
+        if (onReady) this.peer.on("open", onReady);
+    }
+
+    set onData(onData: (data: unknown) => void) {
+        if (this.conn) {
+            this.conn.removeListener("data");
+            if (onData) this.conn.on("data", onData);
+        }
+
+        this._onData = onData;
     }
 
     send(data: unknown): void {
@@ -26,7 +35,6 @@ export abstract class AbstractAppPeerJs extends AbstractAppPeer {
 
     override disconnect(message: string): void {
         this.peer.destroy();
-
         super.disconnect(message);
     }
 
@@ -36,7 +44,7 @@ export abstract class AbstractAppPeerJs extends AbstractAppPeer {
         conn.on("open", () => {
             this.onConnect?.();
 
-            conn.on("data", (data) => this.onData?.(data));
+            conn.on("data", (data) => this._onData?.(data));
 
             conn.on("close", () =>
                 this.disconnect("Your peer is disconnected"),
